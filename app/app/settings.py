@@ -50,9 +50,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-
-    #'app.middleware.LoginRequiredMiddleware',
-    #'app.middleware.SimpleLoginRequiredMiddleware',
+    'website.middleware.LoginRequiredMiddleware',
+    
 ]
 
 ROOT_URLCONF = 'app.urls'
@@ -141,6 +140,8 @@ STATICFILES_DIRS = [BASE_DIR / 'static']
 LOGIN_URL = '/login/'
 
 LOGIN_REDIRECT_URL = 'home'
+
+
 
 
 

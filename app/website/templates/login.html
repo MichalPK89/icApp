@@ -8,46 +8,61 @@
     {% load static %}
     <link rel="shortcut icon" type="image/png" href="{% static 'images/favicon.png' %}">
 
+    <style>
+        /* Custom styles to center the form vertically */
+        body, html {
+            height: 100%;
+        }
+
+        .login-container {
+            height: 100vh; /* Full viewport height */
+        }
+    </style>
+
 </head>
 <body>
 
     {% block content %}
 
-    <div class="col-md-6 offset-md-3">
+    <div class="container d-flex justify-content-center align-items-center login-container">
+        <div class="col-md-6">
 
-        {% if user.is_authenticated %}
+            {% if user.is_authenticated %}
 
-        <script>
-            window.location.href = "{% url 'home' %}";
-        </script>
+            <script>
+                window.location.href = "{% url 'home' %}";
+            </script>
 
-        {% else %}
-        </br>
-        <h1>Login</h1>
+            {% else %}
+            </br>
+            <h1>Login</h1>
 
-        <br />
+            <br />
 
-        <form method="POST" action="{% url 'login' %}">
-            {% csrf_token %}
-            <form>
-                <div class="mb-3">
+            <form method="POST" action="{% url 'login' %}">
+                {% csrf_token %}
+                <form>
+                    <div class="mb-3">
 
-                    <input type="text" class="form-control" name="username" placeholder="username" required>
+                        <input type="text" class="form-control" name="username" placeholder="username" required>
 
-                </div>
-                <div class="mb-3">
+                    </div>
+                    <div class="mb-3">
 
-                    <input type="password" class="form-control" name="password" placeholder="password" required>
-                </div>
-                <br />
-                <button type="submit" class="btn btn-secondary">Submit</button>
+                        <input type="password" class="form-control" name="password" placeholder="password" required>
+                    </div>
+                    <br />
+                    <button type="submit" class="btn btn-secondary">Submit</button>
+                </form>
+
             </form>
 
-        </form>
+        </div>
 
+        {% endif %}
+
+        </div>
     </div>
-
-    {% endif %}
 
     {% endblock %}
 
