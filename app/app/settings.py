@@ -83,7 +83,7 @@ WSGI_APPLICATION = 'app.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'app',
+        'NAME': 'icapp',
         'USER': 'root',
         'PASSWORD': 'password123',
         'HOST': 'localhost',

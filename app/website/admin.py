@@ -1,3 +1,4 @@
 from django.contrib import admin
+from .models import Vat_payer
 
-# Register your models here.
+admin.site.register(Vat_payer)
