@@ -8,7 +8,7 @@ class Vat_payer (models.Model):
     OBEC = models.CharField(max_length=100, blank=True, null=True)
     PSC = models.CharField(max_length=10, blank=True, null=True)
     ULICA_CISLO = models.CharField(max_length=100, blank=True, null=True)
-    STAT = models.CharField(max_length=20, blank=True, null=True)
+    STAT = models.CharField(max_length=50, blank=True, null=True)
     DRUH_REG_DPH = models.CharField(max_length=5, blank=True, null=True)
     DATUM_REG = models.DateField(blank=True, null=True, auto_now_add=False)
     DATUM_ZMENY_DRUHU_REG = models.DateField(blank=True, null=True, auto_now_add=False)

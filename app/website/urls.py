@@ -8,4 +8,5 @@ urlpatterns = [
     path('vat_payer/', views.vat_payer, name='vat_payer'),
     path('vat_payer/<int:pk>', views.vat_payer_record, name='vat_payer_record'),
     path('update_vat_payer/', views.update_vat_payer, name='update_vat_payer'),
+    path('get-vat-payers/', views.get_vat_payers, name='get_vat_payers'),
  ]

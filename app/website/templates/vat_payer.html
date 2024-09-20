@@ -9,9 +9,16 @@
 <br />
 <br />
 
-<div style="max-height: 600px; overflow-y: auto; border: 1px solid #ddd; position: relative;">
-    <table class="table table-striped table-hover table-bordered table-resposive" style="width: 100%; table-layout: fixed;">
-        <thead class="table-dark" style="position: sticky; top: 0; z-index: 10;">
+<!-- Loading spinner placeholder -->
+<div id="loading-container" class="loading-container">
+    <div id="spinner" class="spinner"></div>
+    <p>Loading data...</p>
+</div>
+
+
+<div id="table-content" style="display: none;">
+    <table id="myTable" class="display">
+        <thead>
             <tr>
                 <th scope="col">Názov</th>
                 <th scope="col">IČO</th>
@@ -23,51 +30,27 @@
                 <th scope="col">Druh reg. DPH</th>
                 <th scope="col">Dátum registrácie DPH</th>
                 <th scope="col">Dátum zmeny druhu reg.</th>
-                <th scope="col">Dátum aktualizácie</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody id="vat-payers-body">
 
-            {% if page_obj %}
-            {% for vat_payer in page_obj %}
-            <tr>
-                <td><a href="{% url 'vat_payer_record' vat_payer.id %}">{{ vat_payer.NAZOV_DS }}</a></td>
-                <td>{{ vat_payer.ICO }}</td>
-                <td>{{ vat_payer.IC_DPH }}</td>
-                <td>{{ vat_payer.OBEC }}</td>
-                <td>{{ vat_payer.PSC }}</td>
-                <td>{{ vat_payer.ULICA_CISLO }}</td>
-                <td>{{ vat_payer.STAT }}</td>
-                <td>{{ vat_payer.DRUH_REG_DPH }}</td>
-                <td>{{ vat_payer.DATUM_REG }}</td>
-                <td>{{ vat_payer.DATUM_ZMENY_DRUHU_REG|default_if_none:"" }}</td>
-                <td>{{ vat_payer.DatumAktualizacieZoznamu }}</td>
-            </tr>
-            {% endfor %}
-            {% endif %}
         </tbody>
     </table>
 </div>
 
-<div class="pagination">
-    <span class="step-links">
-        {% if page_obj.has_previous %}
-        <a href="?page=1">&laquo; first</a>&nbsp
-        <a href="?page={{ page_obj.previous_page_number }}">previous</a>
-        {% endif %}
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Column names for this specific table
+        const columns = ['NAZOV_DS', 'ICO', 'IC_DPH', 'OBEC', 'PSC', 'ULICA_CISLO', 'STAT', 'DRUH_REG_DPH', 'DATUM_REG', 'DATUM_ZMENY_DRUHU_REG'];
 
-        <span class="current">
-            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
-        </span>
+        // Call the fetchTableData function to load the table data
+        fetchTableData("{% url 'get_vat_payers' %}", 'vat-payers-body', columns);
+    });
+    </script>
 
-        {% if page_obj.has_next %}
-        <a href="?page={{ page_obj.next_page_number }}">next</a>&nbsp
-        <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
-        {% endif %}
-    </span>
-</div>
 
-{% endblock %}
+
+    {% endblock %}
 
 
 
