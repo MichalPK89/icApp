@@ -12,45 +12,89 @@
 <!-- Loading spinner placeholder -->
 <div id="loading-container" class="loading-container">
     <div id="spinner" class="spinner"></div>
-    <p>Loading data...</p>
+    <p>  Loading data...</p>
 </div>
 
-
 <div id="table-content" style="display: none;">
-    <table id="myTable" class="display">
+    <table class="display">
         <thead>
             <tr>
-                <th scope="col">Názov</th>
-                <th scope="col">IČO</th>
-                <th scope="col">IČ DPH</th>
-                <th scope="col">Obec</th>
-                <th scope="col">PSČ</th>
-                <th scope="col">Ulica, číslo</th>
-                <th scope="col">Štát</th>
-                <th scope="col">Druh reg. DPH</th>
-                <th scope="col">Dátum registrácie DPH</th>
-                <th scope="col">Dátum zmeny druhu reg.</th>
+                <th>Názov</th>
+                <th>IČO</th>
+                <th>IČ DPH</th>
+                <th>Obec</th>
+                <th>PSČ</th>
+                <th>Ulica, číslo</th>
+                <th>Štát</th>
+                <th>Druh reg. DPH</th>
+                <th>Dátum registrácie DPH</th>
+                <th>Dátum zmeny druhu reg.</th>
+            </tr>
+            <tr id="filterTable">
+                <!-- Filters will be dynamically added here -->
+                <th><input type="text" placeholder="Názov" style="width: 100%"></th>
+                <th><input type="text" placeholder="IČO" style="width: 100%"></th>
+                <th><input type="text" placeholder="IČ DPH" style="width: 100%"></th>
+                <th><input type="text" placeholder="Obec" style="width: 100%"></th>
+                <th><input type="text" placeholder="PSČ" style="width: 100%"></th>
+                <th><input type="text" placeholder="Ulica, číslo" style="width: 100%"></th>
+                <th><input type="text" placeholder="Štát" style="width: 100%"></th>
+                <th><input type="text" placeholder="Druh reg. DPH" style="width: 100%"></th>
+                <th><input type="text" placeholder="Dátum registrácie DPH" style="width: 100%"></th>
+                <th><input type="text" placeholder="Dátum zmeny druhu reg." style="width: 100%"></th>
             </tr>
         </thead>
         <tbody id="vat-payers-body">
-
         </tbody>
     </table>
 </div>
 
-    <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Column names for this specific table
-        const columns = ['NAZOV_DS', 'ICO', 'IC_DPH', 'OBEC', 'PSC', 'ULICA_CISLO', 'STAT', 'DRUH_REG_DPH', 'DATUM_REG', 'DATUM_ZMENY_DRUHU_REG'];
-
-        // Call the fetchTableData function to load the table data
-        fetchTableData("{% url 'get_vat_payers' %}", 'vat-payers-body', columns);
-    });
-    </script>
 
 
+<!--
+<div id="table-content" style="display: none;">
+    <table id="myTable" class="display">
+        <thead>
+            <tr>
+                <th>Názov</th>
+                <th>IČO</th>
+                <th>IČ DPH</th>
+                <th>Obec</th>
+                <th>PSČ</th>
+                <th>Ulica, číslo</th>
+                <th>Štát</th>
+                <th>Druh reg. DPH</th>
+                <th>Dátum registrácie DPH</th>
+                <th>Dátum zmeny druhu reg.</th>
+            </tr>
+        </thead>
+        <tbody id="vat-payers-body">
+        </tbody>
+        <!-- Filters will appear above the header -->
+<!--
+<tfoot>
+    <tr id="filterTable">
+        <th><input type="text" placeholder="Názov" style="width: 100%"></th>
+        <th><input type="text" placeholder="IČO" style="width: 100%"></th>
+        <th><input type="text" placeholder="IČ DPH" style="width: 100%"></th>
+        <th><input type="text" placeholder="Obec" style="width: 100%"></th>
+        <th><input type="text" placeholder="PSČ" style="width: 100%"></th>
+        <th><input type="text" placeholder="Ulica, číslo" style="width: 100%"></th>
+        <th><input type="text" placeholder="Štát" style="width: 100%"></th>
+        <th><input type="text" placeholder="Druh reg. DPH" style="width: 100%"></th>
+        <th><input type="text" placeholder="Dátum registrácie DPH" style="width: 100%"></th>
+        <th><input type="text" placeholder="Dátum zmeny druhu reg." style="width: 100%"></th>
+    </tr>
+</tfoot>
+    </table>
+</div>
+-->
+{% endblock %}
 
-    {% endblock %}
+
+
+
+
 
 
 

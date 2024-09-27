@@ -9,8 +9,10 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
+from django.utils.dateformat import format
 from django.db import connection
 from django.http import JsonResponse
+from django.urls import reverse
 from datetime import datetime
 from .models import Vat_payer
 from .utils import XMLDataProcessor
@@ -259,9 +261,27 @@ def update_vat_payer(request):
 def get_vat_payers(request):
     if request.method == 'GET':
         vat_payers = Vat_payer.objects.all().values(
+            'id',  # Explicitly include 'id'
             'NAZOV_DS', 'ICO', 'IC_DPH', 'OBEC', 'PSC', 'ULICA_CISLO', 'STAT', 'DRUH_REG_DPH', 'DATUM_REG', 'DATUM_ZMENY_DRUHU_REG'
-        )
-        return JsonResponse({'rows': list(vat_payers)})
+        )[:1000]  # Limit to 1000 records
+
+        formatted_vat_payers = []
+        for vat_payer in vat_payers:
+            formatted_vat_payers.append({
+                'NAZOV_DS': f'<a href="{reverse("vat_payer_record", args=[vat_payer["id"]])}">{vat_payer["NAZOV_DS"] or ""}</a>',
+                'ICO': vat_payer['ICO'] or '',
+                'IC_DPH': vat_payer['IC_DPH'] or '',
+                'OBEC': vat_payer['OBEC'] or '',
+                'PSC': vat_payer['PSC'] or '',
+                'ULICA_CISLO': vat_payer['ULICA_CISLO'] or '',
+                'STAT': vat_payer['STAT'] or '',
+                'DRUH_REG_DPH': vat_payer['DRUH_REG_DPH'] or '',
+                'DATUM_REG': format(vat_payer['DATUM_REG'], 'd.m.Y') if vat_payer['DATUM_REG'] else '',
+                'DATUM_ZMENY_DRUHU_REG': format(vat_payer['DATUM_ZMENY_DRUHU_REG'], 'd.m.Y') if vat_payer['DATUM_ZMENY_DRUHU_REG'] else ''
+            })
+
+        return JsonResponse({'rows': formatted_vat_payers})
+        
 
 
 
