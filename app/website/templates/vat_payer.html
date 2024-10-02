@@ -16,80 +16,74 @@
 </div>
 
 <div id="table-content" style="display: none;">
-    <table class="display">
-        <thead>
-            <tr>
-                <th>Názov</th>
-                <th>IČO</th>
-                <th>IČ DPH</th>
-                <th>Obec</th>
-                <th>PSČ</th>
-                <th>Ulica, číslo</th>
-                <th>Štát</th>
-                <th>Druh reg. DPH</th>
-                <th>Dátum registrácie DPH</th>
-                <th>Dátum zmeny druhu reg.</th>
-            </tr>
-            <tr id="filterTable">
-                <!-- Filters will be dynamically added here -->
-                <th><input type="text" placeholder="Názov" style="width: 100%"></th>
-                <th><input type="text" placeholder="IČO" style="width: 100%"></th>
-                <th><input type="text" placeholder="IČ DPH" style="width: 100%"></th>
-                <th><input type="text" placeholder="Obec" style="width: 100%"></th>
-                <th><input type="text" placeholder="PSČ" style="width: 100%"></th>
-                <th><input type="text" placeholder="Ulica, číslo" style="width: 100%"></th>
-                <th><input type="text" placeholder="Štát" style="width: 100%"></th>
-                <th><input type="text" placeholder="Druh reg. DPH" style="width: 100%"></th>
-                <th><input type="text" placeholder="Dátum registrácie DPH" style="width: 100%"></th>
-                <th><input type="text" placeholder="Dátum zmeny druhu reg." style="width: 100%"></th>
-            </tr>
-        </thead>
-        <tbody id="vat-payers-body">
-        </tbody>
-    </table>
+    <div class="table-wrapper">
+        <table class="display">
+            <thead>
+                <tr>
+                    {% for header in headers %}
+                    <th>{{ header }}</th>
+                    {% endfor %}
+                </tr>
+                <tr id="filterTable">
+                    <!-- Filters will be dynamically added here -->
+                    {% for header in headers %}
+                    <th><input type="text" placeholder="{{ header }}" style="width: 100%"></th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody id="vat-payers-body">
+                {% for row in rows %}
+                <tr>
+                    {% for value in row.values %}
+                    <td>{{ value }}</td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </div>
-
-
 
 <!--
 <div id="table-content" style="display: none;">
-    <table id="myTable" class="display">
-        <thead>
-            <tr>
-                <th>Názov</th>
-                <th>IČO</th>
-                <th>IČ DPH</th>
-                <th>Obec</th>
-                <th>PSČ</th>
-                <th>Ulica, číslo</th>
-                <th>Štát</th>
-                <th>Druh reg. DPH</th>
-                <th>Dátum registrácie DPH</th>
-                <th>Dátum zmeny druhu reg.</th>
-            </tr>
-        </thead>
-        <tbody id="vat-payers-body">
-        </tbody>
-        <!-- Filters will appear above the header -->
-<!--
-<tfoot>
-    <tr id="filterTable">
-        <th><input type="text" placeholder="Názov" style="width: 100%"></th>
-        <th><input type="text" placeholder="IČO" style="width: 100%"></th>
-        <th><input type="text" placeholder="IČ DPH" style="width: 100%"></th>
-        <th><input type="text" placeholder="Obec" style="width: 100%"></th>
-        <th><input type="text" placeholder="PSČ" style="width: 100%"></th>
-        <th><input type="text" placeholder="Ulica, číslo" style="width: 100%"></th>
-        <th><input type="text" placeholder="Štát" style="width: 100%"></th>
-        <th><input type="text" placeholder="Druh reg. DPH" style="width: 100%"></th>
-        <th><input type="text" placeholder="Dátum registrácie DPH" style="width: 100%"></th>
-        <th><input type="text" placeholder="Dátum zmeny druhu reg." style="width: 100%"></th>
-    </tr>
-</tfoot>
-    </table>
+    <div class="table-wrapper">
+        Optional wrapper for additional styling
+        <table class="display">
+            <thead>
+                <tr>
+                    <th>Názov</th>
+                    <th>IČO</th>
+                    <th>IČ DPH</th>
+                    <th>Obec</th>
+                    <th>PSČ</th>
+                    <th>Ulica, číslo</th>
+                    <th>Štát</th>
+                    <th>Druh reg. DPH</th>
+                    <th>Dátum registrácie DPH</th>
+                    <th>Dátum zmeny druhu reg.</th>
+                </tr>
+                <tr id="filterTable">
+                    
+                    <th><input type="text" placeholder="Názov" style="width: 100%"></th>
+                    <th><input type="text" placeholder="IČO" style="width: 100%"></th>
+                    <th><input type="text" placeholder="IČ DPH" style="width: 100%"></th>
+                    <th><input type="text" placeholder="Obec" style="width: 100%"></th>
+                    <th><input type="text" placeholder="PSČ" style="width: 100%"></th>
+                    <th><input type="text" placeholder="Ulica, číslo" style="width: 100%"></th>
+                    <th><input type="text" placeholder="Štát" style="width: 100%"></th>
+                    <th><input type="text" placeholder="Druh reg. DPH" style="width: 100%"></th>
+                    <th><input type="text" placeholder="Dátum registrácie DPH" style="width: 100%"></th>
+                    <th><input type="text" placeholder="Dátum zmeny druhu reg." style="width: 100%"></th>
+                </tr>
+            </thead>
+            <tbody id="vat-payers-body">
+            </tbody>
+        </table>
+    </div>
 </div>
 -->
-{% endblock %}
+
+    {% endblock %}
 
 
 

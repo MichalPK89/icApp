@@ -265,6 +265,12 @@ def get_vat_payers(request):
             'NAZOV_DS', 'ICO', 'IC_DPH', 'OBEC', 'PSC', 'ULICA_CISLO', 'STAT', 'DRUH_REG_DPH', 'DATUM_REG', 'DATUM_ZMENY_DRUHU_REG'
         )[:1000]  # Limit to 1000 records
 
+        headers = [
+            "Názov", "IČO", "IČ DPH", "Obec", "PSČ", 
+            "Ulica, číslo", "Štát", "Druh reg. DPH", 
+            "Dátum registrácie DPH", "Dátum zmeny druhu reg."
+        ]
+
         formatted_vat_payers = []
         for vat_payer in vat_payers:
             formatted_vat_payers.append({
@@ -280,7 +286,7 @@ def get_vat_payers(request):
                 'DATUM_ZMENY_DRUHU_REG': format(vat_payer['DATUM_ZMENY_DRUHU_REG'], 'd.m.Y') if vat_payer['DATUM_ZMENY_DRUHU_REG'] else ''
             })
 
-        return JsonResponse({'rows': formatted_vat_payers})
+        return JsonResponse({'rows': formatted_vat_payers, 'headers': headers})
         
 
 
