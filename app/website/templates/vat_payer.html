@@ -9,15 +9,16 @@
 <br />
 <br />
 
-<!-- Loading spinner placeholder -->
-<div id="loading-container" class="loading-container">
-    <div id="spinner" class="spinner"></div>
-    <p>  Loading data...</p>
+
+<!-- Loading spinner placeholder-->
+<div id="loading-container1" class="loading-container">
+    <div id="spinner1" class="spinner"></div>
+    <p>Loading data...</p>
 </div>
 
-<div id="table-content" style="display: none;">
+<div id="table-content1" style="display: none;">
     <div class="table-wrapper">
-        <table class="display">
+        <table id="vat_payers" class="display" data-url="{% url 'get_vat_payers' %}">
             <thead>
                 <tr>
                     {% for header in headers %}
@@ -25,7 +26,7 @@
                     {% endfor %}
                 </tr>
                 <tr id="filterTable">
-                    <!-- Filters will be dynamically added here -->
+                    <!-- Filters will be dynamically added here-->
                     {% for header in headers %}
                     <th><input type="text" placeholder="{{ header }}" style="width: 100%"></th>
                     {% endfor %}
@@ -43,45 +44,47 @@
         </table>
     </div>
 </div>
+            
+<!-- Loading spinner placeholder-->
+<div id="loading-container2" class="loading-container">
+    <div id="spinner2" class="spinner"></div>
+    <p>Loading data...</p>
+</div>
 
-<!--
-<div id="table-content" style="display: none;">
+
+<div id="table-content2" style="display: none;">
     <div class="table-wrapper">
-        Optional wrapper for additional styling
-        <table class="display">
+        <table id="vat_payer_settings" class="display" data-url="{% url 'get_vat_payer_settings' %}">
             <thead>
                 <tr>
-                    <th>Názov</th>
-                    <th>IČO</th>
-                    <th>IČ DPH</th>
-                    <th>Obec</th>
-                    <th>PSČ</th>
-                    <th>Ulica, číslo</th>
-                    <th>Štát</th>
-                    <th>Druh reg. DPH</th>
-                    <th>Dátum registrácie DPH</th>
-                    <th>Dátum zmeny druhu reg.</th>
+                    {% for header in headers %}
+                    <th>{{ header }}</th>
+                    {% endfor %}
                 </tr>
                 <tr id="filterTable">
-                    
-                    <th><input type="text" placeholder="Názov" style="width: 100%"></th>
-                    <th><input type="text" placeholder="IČO" style="width: 100%"></th>
-                    <th><input type="text" placeholder="IČ DPH" style="width: 100%"></th>
-                    <th><input type="text" placeholder="Obec" style="width: 100%"></th>
-                    <th><input type="text" placeholder="PSČ" style="width: 100%"></th>
-                    <th><input type="text" placeholder="Ulica, číslo" style="width: 100%"></th>
-                    <th><input type="text" placeholder="Štát" style="width: 100%"></th>
-                    <th><input type="text" placeholder="Druh reg. DPH" style="width: 100%"></th>
-                    <th><input type="text" placeholder="Dátum registrácie DPH" style="width: 100%"></th>
-                    <th><input type="text" placeholder="Dátum zmeny druhu reg." style="width: 100%"></th>
+                    <!-- Filters will be dynamically added here-->
+                    {% for header in headers %}
+                    <th><input type="text" placeholder="{{ header }}" style="width: 100%"></th>
+                    {% endfor %}
                 </tr>
             </thead>
-            <tbody id="vat-payers-body">
+            <tbody id="vat-payer-setting-body">
+                {% for row in rows %}
+                <tr>
+                    {% for value in row.values %}
+                    <td>{{ value }}</td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
             </tbody>
         </table>
     </div>
 </div>
--->
+            
+
+
+
+
 
     {% endblock %}
 

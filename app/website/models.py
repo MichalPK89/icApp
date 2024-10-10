@@ -15,3 +15,10 @@ class Vat_payer (models.Model):
 
     def __str__(self):
         return(f"{self.NAZOV_DS}, {self.ICO}, {self.IC_DPH}, {self.DRUH_REG_DPH}, {self.DatumAktualizacieZoznamu}")
+
+class Vat_payer_setting (models.Model):
+    DRUH_REG_DPH = models.CharField(max_length=5, blank=False, null=False)
+    PLATNY_DRUH_REG = models.BooleanField()
+    
+    def __str__(self):
+        return(f"{self.DRUH_REG_DPH}, {self.PLATNY_DRUH_REG}")
