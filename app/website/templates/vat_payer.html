@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+﻿{% extends 'base.html' %}
 
 {% block content %}
 
@@ -11,14 +11,14 @@
 
 
 <!-- Loading spinner placeholder-->
-<div id="loading-container1" class="loading-container">
-    <div id="spinner1" class="spinner"></div>
+<div class="loading-container">
+    <div class="spinner"></div>
     <p>Loading data...</p>
 </div>
 
-<div id="table-content1" style="display: none;">
+<div class="datatable">
     <div class="table-wrapper">
-        <table id="vat_payers" class="display" data-url="{% url 'get_vat_payers' %}">
+        <table id="customer_vat_check" class="display" data-url="{% url 'get_customer_vat_check' %}">
             <thead>
                 <tr>
                     {% for header in headers %}
@@ -32,7 +32,7 @@
                     {% endfor %}
                 </tr>
             </thead>
-            <tbody id="vat-payers-body">
+            <tbody id="customer-vat-check-body">
                 {% for row in rows %}
                 <tr>
                     {% for value in row.values %}
@@ -44,15 +44,16 @@
         </table>
     </div>
 </div>
-            
+<br />
+<br />
+
 <!-- Loading spinner placeholder-->
-<div id="loading-container2" class="loading-container">
-    <div id="spinner2" class="spinner"></div>
+<div class="loading-container">
+    <div class="spinner"></div>
     <p>Loading data...</p>
 </div>
 
-
-<div id="table-content2" style="display: none;">
+<div class="datatable">
     <div class="table-wrapper">
         <table id="vat_payer_settings" class="display" data-url="{% url 'get_vat_payer_settings' %}">
             <thead>
@@ -68,7 +69,7 @@
                     {% endfor %}
                 </tr>
             </thead>
-            <tbody id="vat-payer-setting-body">
+            <tbody id="vat_payer_settings_body">
                 {% for row in rows %}
                 <tr>
                     {% for value in row.values %}
@@ -80,7 +81,47 @@
         </table>
     </div>
 </div>
-            
+<br />
+<br />
+
+
+
+<!-- Loading spinner placeholder-->
+<div class="loading-container">
+    <div class="spinner"></div>
+    <p>Loading data...</p>
+</div>
+
+
+<div class="datatable">
+    <div class="table-wrapper">
+        <table id="vat_payers" class="display" data-url="{% url 'get_vat_payers' %}">
+            <thead>
+                <tr>
+                    {% for header in headers %}
+                    <th>{{ header }}</th>
+                    {% endfor %}
+                </tr>
+                <tr id="filterTable">
+                    <!-- Filters will be dynamically added here-->
+                    {% for header in headers %}
+                    <th><input type="text" placeholder="{{ header }}" style="width: 100%"></th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody id="vat-payer-body">
+                {% for row in rows %}
+                <tr>
+                    {% for value in row.values %}
+                    <td>{{ value }}</td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
 
 
 

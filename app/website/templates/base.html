@@ -110,12 +110,10 @@
 
             function fetchTableData(url, tableBodyId, tableElement) {
                 console.log(`Fetching data from URL: ${url}`);
+                             
 
-                $('#loading-container1').show();
-                $('#table-content1').hide();
-
-                $('#loading-container2').show();
-                $('#table-content2').hide();
+                $(".loading-container").show();
+                $(".datatable").hide();
 
 
                 fetch(url, { method: 'GET', headers: { 'Content-Type': 'application/json' } })
@@ -126,11 +124,9 @@
                     .then(data => {
                         console.log("Fetched data:", data);
 
-                        $('#loading-container1').hide();
-                        $('#table-content1').show();
-
-                        $('#loading-container2').hide();
-                        $('#table-content2').show();
+                        
+                        $(".loading-container").hide();
+                        $(".datatable").show();
 
 
                         let tbody = document.getElementById(tableBodyId);

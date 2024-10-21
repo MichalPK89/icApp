@@ -22,3 +22,28 @@ class Vat_payer_setting (models.Model):
     
     def __str__(self):
         return(f"{self.DRUH_REG_DPH}, {self.PLATNY_DRUH_REG}")
+
+class Customer (models.Model):
+    NAZOV = models.CharField(max_length=200, blank=False, null=False)
+    ICO = models.CharField(max_length=20, blank=True, null=True)
+    DIC = models.CharField(max_length=20, blank=True, null=True)
+    IC_DPH = models.CharField(max_length=20, blank=True, null=True)
+    
+    def __str__(self):
+        return(f"{self.ICO}, {self.NAZOV}")
+
+class Customer_VAT_check (models.Model):
+    ID = models.AutoField(primary_key=True)
+    NAZOV = models.CharField(max_length=200, blank=False, null=False)
+    ICO = models.CharField(max_length=20, blank=True, null=True)
+    IC_DPH_customer = models.CharField(max_length=20, blank=True, null=True)
+    IC_DPH_fin = models.CharField(max_length=20, blank=True, null=True)
+    PLATNY_DRUH_REG = models.BooleanField()
+    DESCRIPTION = models.CharField(max_length=40, blank=True, null=True)
+    
+    class Meta:
+        # The name of the view in the database
+        db_table = 'customer_vat_check'
+        managed = False  # No migrations will be created for this model since it refers to a view
+
+    

@@ -14,7 +14,7 @@ from django.db import connection
 from django.http import JsonResponse
 from django.urls import reverse
 from datetime import datetime
-from .models import Vat_payer, Vat_payer_setting
+from .models import Vat_payer, Vat_payer_setting, Customer_VAT_check
 from .utils import XMLDataProcessor
 
 
@@ -201,7 +201,36 @@ def get_vat_payer_settings(request):
             })
 
         return JsonResponse({'rows': formatted_vat_payer_settings})
+
+
+def get_customer_vat_check(request):
+    if request.method == 'GET':
+        customer_vat_checks = Customer_VAT_check.objects.all().values(
+            'ID',
+            'NAZOV',
+            'ICO',
+            'IC_DPH_customer',
+            'IC_DPH_fin',
+            'PLATNY_DRUH_REG',
+            'DESCRIPTION'
+        )[:1000]  # Limit to 1000 records
+
         
+        formatted_customer_vat_check = []
+        for customer_vat_check in customer_vat_checks:
+            formatted_customer_vat_check.append({
+                'id': customer_vat_check["ID"],
+                'Názov': customer_vat_check["NAZOV"],
+                'IČO': customer_vat_check["ICO"],
+                'IČ DPH zákazník': customer_vat_check["IC_DPH_customer"],
+                'IČ DPH fin': customer_vat_check["IC_DPH_fin"],
+                'platný druh reg.': customer_vat_check['PLATNY_DRUH_REG'],
+                'popis': customer_vat_check['DESCRIPTION']
+            })
+
+        return JsonResponse({'rows': formatted_customer_vat_check})
+
+
 
 
 

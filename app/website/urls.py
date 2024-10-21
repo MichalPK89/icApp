@@ -10,4 +10,6 @@ urlpatterns = [
     path('update_vat_payer/', views.update_vat_payer, name='update_vat_payer'),
     path('get-vat-payers/', views.get_vat_payers, name='get_vat_payers'),
     path('get-vat-payer_settings/', views.get_vat_payer_settings, name='get_vat_payer_settings'),
+    path('get-customer_vat_check/', views.get_customer_vat_check, name='get_customer_vat_check'),
+    
  ]
