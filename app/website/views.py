@@ -211,7 +211,7 @@ def get_customer_vat_check(request):
             'ICO',
             'IC_DPH_customer',
             'IC_DPH_fin',
-            'PLATNY_DRUH_REG',
+            'DRUH_REG_DPH',
             'DESCRIPTION'
         )[:1000]  # Limit to 1000 records
 
@@ -224,7 +224,7 @@ def get_customer_vat_check(request):
                 'IČO': customer_vat_check["ICO"],
                 'IČ DPH zákazník': customer_vat_check["IC_DPH_customer"],
                 'IČ DPH fin': customer_vat_check["IC_DPH_fin"],
-                'platný druh reg.': customer_vat_check['PLATNY_DRUH_REG'],
+                'druh reg. DPH': customer_vat_check['DRUH_REG_DPH'],
                 'popis': customer_vat_check['DESCRIPTION']
             })
 

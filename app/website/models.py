@@ -38,7 +38,7 @@ class Customer_VAT_check (models.Model):
     ICO = models.CharField(max_length=20, blank=True, null=True)
     IC_DPH_customer = models.CharField(max_length=20, blank=True, null=True)
     IC_DPH_fin = models.CharField(max_length=20, blank=True, null=True)
-    PLATNY_DRUH_REG = models.BooleanField()
+    DRUH_REG_DPH = models.CharField(max_length=10, blank=True, null=True)
     DESCRIPTION = models.CharField(max_length=40, blank=True, null=True)
     
     class Meta:

@@ -99,126 +99,135 @@
 
             // Iterate through all tables with the class "display"
             $('table.display').each(function () {
+                const tableId = $(this).attr('id') || 'default-table'; 
                 const url = $(this).data('url');
                 const tableBodyId = $(this).find('tbody').attr('id') || 'default-tbody';
+                
+                console.log("tableId: ", tableId);  // Check if tableId is correct
+                const loadingContainerId = '#lc_' + tableId;
+                console.log("loadingContainerId: ", loadingContainerId); 
+                console.log($(loadingContainerId).length > 0 ? "Found loading container!" : "Loading container not found");
 
+                
                 console.log(`Found table with data-url: ${url}, tbody ID: ${tableBodyId}`);
 
                 // Call fetchTableData for each table
-                fetchTableData(url, tableBodyId, $(this));
-            });
+                fetchTableData(url, tableBodyId, $(this), loadingContainerId);
 
-            function fetchTableData(url, tableBodyId, tableElement) {
-                console.log(`Fetching data from URL: ${url}`);
-                             
+                function fetchTableData(url, tableBodyId, tableElement, loadingContainerId) {
+                    console.log(`Fetching data from URL: ${url}`);
 
-                $(".loading-container").show();
-                $(".datatable").hide();
+                    $(loadingContainerId).show();
+                    tableElement.hide();
 
 
-                fetch(url, { method: 'GET', headers: { 'Content-Type': 'application/json' } })
-                    .then(response => {
-                        console.log("Received response:", response);
-                        return response.json();
-                    })
-                    .then(data => {
-                        console.log("Fetched data:", data);
-
-                        
-                        $(".loading-container").hide();
-                        $(".datatable").show();
+                    fetch(url, { method: 'GET', headers: { 'Content-Type': 'application/json' } })
+                        .then(response => {
+                            console.log("Received response:", response);
+                            return response.json();
+                        })
+                        .then(data => {
+                            console.log("Fetched data:", data);
 
 
-                        let tbody = document.getElementById(tableBodyId);
-                        tbody.innerHTML = '';  // Clear existing rows
+                            $(loadingContainerId).hide();
+                            tableElement.show();
 
-                        if (data.rows.length > 0) {
-                            let headers = Object.keys(data.rows[0]);
-                            console.log("Headers generated from data:", headers);
 
-                            // Clear existing thead and create new one
-                            tableElement.find('thead').empty();
+                            let tbody = document.getElementById(tableBodyId);
+                            tbody.innerHTML = '';  // Clear existing rows
 
-                            // Create and append header row
-                            let thead = '<tr>';
-                            headers.forEach(header => {
-                                thead += `<th>${header}</th>`;
-                            });
-                            thead += '</tr>';
-                            tableElement.find('thead').append(thead);
+                            if (data.rows.length > 0) {
+                                let headers = Object.keys(data.rows[0]);
+                                console.log("Headers generated from data:", headers);
 
-                            // Create filter row
-                            let filterRow = '<tr id="filterTable">';
-                            headers.forEach(header => {
-                                filterRow += `<th><input type="text" placeholder="${header}" style="width: 100%"></th>`;
-                            });
-                            filterRow += '</tr>';
-                            tableElement.find('thead').append(filterRow); // Append filter row
+                                // Clear existing thead and create new one
+                                tableElement.find('thead').empty();
 
-                            // Populate the table body with fetched data
-                            data.rows.forEach(row => {
-                                let tableRow = '<tr>';
+                                // Create and append header row
+                                let thead = '<tr>';
                                 headers.forEach(header => {
-                                    tableRow += `<td>${row[header] || ''}</td>`;
+                                    thead += `<th>${header}</th>`;
                                 });
-                                tableRow += '</tr>';
-                                tbody.innerHTML += tableRow;
-                            });
+                                thead += '</tr>';
+                                tableElement.find('thead').append(thead);
 
-                            console.log("Table rows generated successfully.");
-                        } else {
-                            console.log("No rows found in data.");
-                        }
+                                // Create filter row
+                                let filterRow = `<tr id="filterTable-${tableId}">`;
+                                
+                                headers.forEach(header => {
+                                    filterRow += `<th><input type="text" placeholder="${header}" style="width: 100%"></th>`;
+                                });
+                                filterRow += '</tr>';
+                                tableElement.find('thead').append(filterRow); // Append filter row
 
-                        // Initialize DataTable with export options
-                        const newTable = tableElement.DataTable({
-                            responsive: true,
-                            scrollY: '500px',  // Set table height
-                            scrollCollapse: true,  // Allow table to shrink if there's less data
-                            paging: true,  // Enable paging
-                            pageLength: 50,  // Set default rows per page
-                            autoWidth: false,  // Disable auto column width
-                            dom: 'Bfrtip',  // Add export buttons (CSV/Excel)
-                            buttons: [
-                                {
-                                    extend: 'csvHtml5',
-                                    text: 'Export CSV',
-                                    bom: true,  // Include UTF-8 BOM for encoding
-                                    filename: 'VatPayersData',
-                                    customize: function (csv) {
-                                        // Customize CSV to include headers
-                                        const headers = tableElement.find('thead tr:eq(0) th').map(function () {
-                                            return $(this).text();
-                                        }).get();
-                                        csv = headers.join(",") + "\n" + csv;  // Prepend headers to CSV
-                                        return csv;
+                                // Populate the table body with fetched data
+                                data.rows.forEach(row => {
+                                    let tableRow = '<tr>';
+                                    headers.forEach(header => {
+                                        tableRow += `<td>${row[header] || ''}</td>`;
+                                    });
+                                    tableRow += '</tr>';
+                                    tbody.innerHTML += tableRow;
+                                });
+
+                                console.log("Table rows generated successfully.");
+                            } else {
+                                console.log("No rows found in data.");
+                            }
+
+                           
+                            // Initialize DataTable with export options
+                            const newTable = tableElement.DataTable({
+                                responsive: true,
+                                scrollY: '500px',  // Set table height
+                                scrollCollapse: true,  // Allow table to shrink if there's less data
+                                paging: true,  // Enable paging
+                                pageLength: 50,  // Set default rows per page
+                                autoWidth: false,  // Disable auto column width
+                                dom: 'Bfrtip',  // Add export buttons (CSV/Excel)
+                                buttons: [
+                                    {
+                                        extend: 'csvHtml5',
+                                        text: 'Export CSV',
+                                        bom: true,  // Include UTF-8 BOM for encoding
+                                        filename: 'VatPayersData',
+                                        customize: function (csv) {
+                                            // Customize CSV to include headers
+                                            const headers = tableElement.find('thead tr:eq(0) th').map(function () {
+                                                return $(this).text();
+                                            }).get();
+                                            }).get();
+                                            csv = headers.join(",") + "\n" + csv;  // Prepend headers to CSV
+                                            return csv;
+                                        }
+                                    },
+                                    {
+                                        extend: 'excelHtml5',
+                                        text: 'Export Excel',
+                                        filename: 'VatPayersData',
+                                        header: true
                                     }
-                                },
-                                {
-                                    extend: 'excelHtml5',
-                                    text: 'Export Excel',
-                                    filename: 'VatPayersData',
-                                    header: true
-                                }
-                            ]
-                        });
-
-                        // Apply individual column filters
-                        newTable.columns().every(function (index) {
-                            $('#filterTable th input').eq(index).on('keyup change', function () {
-                                newTable
-                                    .column(index)
-                                    .search(this.value)
-                                    .draw();
+                                ]
                             });
-                        });
 
-                        console.log("DataTable initialized successfully.");
-                    })
-                    .catch(error => {
-                        console.error('Error during data fetching:', error);
-                    });
-            }
+                            // Apply individual column filters
+                            newTable.columns().every(function (index) {
+                                $(`#filterTable-${tableId} th input`).eq(index).on('keyup change', function () {
+                                    newTable
+                                        .column(index)
+                                        .search(this.value)
+                                        .draw();
+                                });
+                            });
+
+                            console.log("DataTable initialized successfully.");
+                        })
+                        .catch(error => {
+                            console.error('Error during data fetching:', error);
+                        });
+                }
+            });                  
         });
 
     </script>

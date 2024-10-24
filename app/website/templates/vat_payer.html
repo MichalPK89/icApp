@@ -11,7 +11,7 @@
 
 
 <!-- Loading spinner placeholder-->
-<div class="loading-container">
+<div id="lc_customer_vat_check" class="loading-container">
     <div class="spinner"></div>
     <p>Loading data...</p>
 </div>
@@ -25,7 +25,7 @@
                     <th>{{ header }}</th>
                     {% endfor %}
                 </tr>
-                <tr id="filterTable">
+                <tr id="filterTable1">
                     <!-- Filters will be dynamically added here-->
                     {% for header in headers %}
                     <th><input type="text" placeholder="{{ header }}" style="width: 100%"></th>
@@ -48,7 +48,7 @@
 <br />
 
 <!-- Loading spinner placeholder-->
-<div class="loading-container">
+<div id="lc_vat_payer_settings" class="loading-container">
     <div class="spinner"></div>
     <p>Loading data...</p>
 </div>
@@ -62,7 +62,7 @@
                     <th>{{ header }}</th>
                     {% endfor %}
                 </tr>
-                <tr id="filterTable">
+                <tr id="filterTable2">
                     <!-- Filters will be dynamically added here-->
                     {% for header in headers %}
                     <th><input type="text" placeholder="{{ header }}" style="width: 100%"></th>
@@ -87,7 +87,7 @@
 
 
 <!-- Loading spinner placeholder-->
-<div class="loading-container">
+<div id="lc_vat_payers" class="loading-container">
     <div class="spinner"></div>
     <p>Loading data...</p>
 </div>
@@ -102,7 +102,7 @@
                     <th>{{ header }}</th>
                     {% endfor %}
                 </tr>
-                <tr id="filterTable">
+                <tr id="filterTable3">
                     <!-- Filters will be dynamically added here-->
                     {% for header in headers %}
                     <th><input type="text" placeholder="{{ header }}" style="width: 100%"></th>
