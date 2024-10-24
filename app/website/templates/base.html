@@ -101,12 +101,9 @@
             $('table.display').each(function () {
                 const tableId = $(this).attr('id') || 'default-table'; 
                 const url = $(this).data('url');
-                const tableBodyId = $(this).find('tbody').attr('id') || 'default-tbody';
-                
-                console.log("tableId: ", tableId);  // Check if tableId is correct
+                const tableBodyId = $(this).find('tbody').attr('id') || 'default-tbody';              
                 const loadingContainerId = '#lc_' + tableId;
-                console.log("loadingContainerId: ", loadingContainerId); 
-                console.log($(loadingContainerId).length > 0 ? "Found loading container!" : "Loading container not found");
+                              
 
                 
                 console.log(`Found table with data-url: ${url}, tbody ID: ${tableBodyId}`);
@@ -116,6 +113,7 @@
 
                 function fetchTableData(url, tableBodyId, tableElement, loadingContainerId) {
                     console.log(`Fetching data from URL: ${url}`);
+
 
                     $(loadingContainerId).show();
                     tableElement.hide();
@@ -154,7 +152,7 @@
 
                                 // Create filter row
                                 let filterRow = `<tr id="filterTable-${tableId}">`;
-                                
+                                console.log(filterRow);
                                 headers.forEach(header => {
                                     filterRow += `<th><input type="text" placeholder="${header}" style="width: 100%"></th>`;
                                 });
@@ -177,6 +175,8 @@
                             }
 
                            
+
+
                             // Initialize DataTable with export options
                             const newTable = tableElement.DataTable({
                                 responsive: true,
@@ -191,12 +191,11 @@
                                         extend: 'csvHtml5',
                                         text: 'Export CSV',
                                         bom: true,  // Include UTF-8 BOM for encoding
-                                        filename: 'VatPayersData',
+                                        filename: tableId,
                                         customize: function (csv) {
                                             // Customize CSV to include headers
                                             const headers = tableElement.find('thead tr:eq(0) th').map(function () {
                                                 return $(this).text();
-                                            }).get();
                                             }).get();
                                             csv = headers.join(",") + "\n" + csv;  // Prepend headers to CSV
                                             return csv;
@@ -205,7 +204,7 @@
                                     {
                                         extend: 'excelHtml5',
                                         text: 'Export Excel',
-                                        filename: 'VatPayersData',
+                                        filename: tableId,
                                         header: true
                                     }
                                 ]
