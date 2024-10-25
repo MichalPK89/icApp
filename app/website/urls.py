@@ -11,5 +11,6 @@ urlpatterns = [
     path('get-vat-payers/', views.get_vat_payers, name='get_vat_payers'),
     path('get-vat-payer_settings/', views.get_vat_payer_settings, name='get_vat_payer_settings'),
     path('get-customer_vat_check/', views.get_customer_vat_check, name='get_customer_vat_check'),
-    
+    path('test/', views.test, name='test'),
+    path('test_vat_payer/', views.test_vat_payer, name='test_vat_payer'),
  ]

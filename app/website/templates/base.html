@@ -76,6 +76,8 @@
             z-index: 10;
             background-color: white; /* Ensure the header has a background */
         }
+
+
     </style>
 
     {% endblock %}
@@ -192,12 +194,21 @@
                                         text: 'Export CSV',
                                         bom: true,  // Include UTF-8 BOM for encoding
                                         filename: tableId,
+                                        fieldSeparator: ';',
                                         customize: function (csv) {
                                             // Customize CSV to include headers
                                             const headers = tableElement.find('thead tr:eq(0) th').map(function () {
                                                 return $(this).text();
                                             }).get();
-                                            csv = headers.join(",") + "\n" + csv;  // Prepend headers to CSV
+                                            // Convert rows to CSV format, skipping second row
+                                            const dataRows = tableElement.find('tbody tr:not(:eq(1))').map(function () {
+                                                return $(this).find('td').map(function () {
+                                                    return $(this).text();
+                                                }).get().join(";");
+                                            }).get().join("\n");
+
+                                            // Concatenate headers and data rows into CSV
+                                            csv = headers.join(";") + "\n" + dataRows;
                                             return csv;
                                         }
                                     },
@@ -205,7 +216,35 @@
                                         extend: 'excelHtml5',
                                         text: 'Export Excel',
                                         filename: tableId,
-                                        header: true
+                                        title: '',  // Avoid pulling in the base title
+                                        customize: function (xlsx) {
+                                            var sheet = xlsx.xl.worksheets['sheet1.xml'];
+                                            var headers = tableElement.find('thead tr:eq(0) th').map(function () {
+                                                return $(this).text();
+                                            }).get();
+
+                                            // Add headers explicitly to the first row in the sheet XML
+                                            var headerRow = '<row r="1">';
+                                            headers.forEach((header, index) => {
+                                                const cellRef = String.fromCharCode(65 + index) + "1";  // Convert index to Excel column letters (A, B, C...)
+                                                headerRow += `<c t="inlineStr" r="${cellRef}"><is><t>${header}</t></is></c>`;
+                                            });
+                                            headerRow += '</row>';
+
+                                            // Insert headers as the first row in the worksheet XML
+                                            $(sheet).find('sheetData').prepend(headerRow);
+
+                                            // Remove empty rows that may appear before the header row
+                                            $('row', sheet).each(function (index) {
+                                                if (index > 0 && $(this).find("c").length === 0) {
+                                                    $(this).remove();
+                                                }
+                                            });
+                                        },
+                                        exportOptions: {
+                                            rows: ':not(:eq(1))',  // Exclude the filter row if it's the second row
+                                            columns: ':visible'    // Export only visible columns
+                                        }
                                     }
                                 ]
                             });

@@ -231,11 +231,15 @@ def get_customer_vat_check(request):
         return JsonResponse({'rows': formatted_customer_vat_check})
 
 
+def test(request):
+     return render(request, 'test.html', {})
 
 
 
-
-
+def test_vat_payer(request):
+    vat_payers = Vat_payer.objects.all()  # Fetch all VAT payers
+       
+    return render(request, 'test_vat_payer.html', {'vat_payers': vat_payers})
 
 
 
