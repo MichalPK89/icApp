@@ -1,4 +1,19 @@
 from django.db import models
+from django.utils.translation import gettext_lazy as _
+
+class Item(models.Model):
+    identifier = models.CharField(max_length=100)  # Unique identifier for the item
+
+    def __str__(self):
+        return(f"{self.identifier}")
+
+class ItemTranslation(models.Model):
+    item = models.ForeignKey(Item, related_name="translations", on_delete=models.CASCADE)
+    language_code = models.CharField(max_length=2)  # e.g., "en", "fr", "de"
+    name = models.CharField(max_length=200)
+
+    def __str__(self):
+        return(f"{self.item}, {self.language_code}, {self.name}")
 
 class Vat_payer (models.Model):
     DatumAktualizacieZoznamu = models.DateField()

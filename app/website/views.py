@@ -10,12 +10,13 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.utils.dateformat import format
+from django.utils.translation import get_language
 from django.db import connection
 from django.http import JsonResponse
 from django.urls import reverse
 from datetime import datetime
 from .forms import AddVatPayerSettingsForm
-from .models import Vat_payer, Vat_payer_setting, Customer_VAT_check
+from .models import Item, ItemTranslation, Vat_payer, Vat_payer_setting, Customer_VAT_check
 from .utils import XMLDataProcessor
 
 
@@ -25,7 +26,12 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 def home(request):
-     return render(request, 'home.html', {})
+    current_language = get_language()
+    item = Item.objects.get(identifier='welcome_page')
+    welcome_page_translation = item.translations.filter(language_code=current_language).first()
+    welcome_page_text = welcome_page_translation.name if welcome_page_translation else ""
+    
+    return render(request, 'home.html', {'welcome_page': welcome_page_text})
 
 
 def login_user(request):
@@ -49,17 +55,7 @@ def logout_user(request):
 
 def vat_payer(request):
     vat_payers = Vat_payer.objects.all()  # Fetch all VAT payers
-
-    # Set up pagination with 100 records per page
-    '''paginator = Paginator(vat_payers, 100)
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
-
-    context = {
-        'page_obj': page_obj,
-    }
-
-    return render(request, 'vat_payer.html', context)'''
+        
     return render(request, 'vat_payer.html', {'vat_payers': vat_payers})
 
 def vat_payer_settings_record(request, pk):
