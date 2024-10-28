@@ -14,6 +14,7 @@ from django.db import connection
 from django.http import JsonResponse
 from django.urls import reverse
 from datetime import datetime
+from .forms import AddVatPayerSettingsForm
 from .models import Vat_payer, Vat_payer_setting, Customer_VAT_check
 from .utils import XMLDataProcessor
 
@@ -61,9 +62,9 @@ def vat_payer(request):
     return render(request, 'vat_payer.html', context)'''
     return render(request, 'vat_payer.html', {'vat_payers': vat_payers})
 
-def vat_payer_record(request, pk):
-    vat_payer_record = Vat_payer.objects.get(id=pk)
-    return render(request, 'vat_payer_record.html', {'vat_payer_record': vat_payer_record})
+def vat_payer_settings_record(request, pk):
+    vat_payer_settings_record = Vat_payer_setting.objects.get(id=pk)
+    return render(request, 'vat_payer_settings_record.html', {'vat_payer_settings_record': vat_payer_settings_record})
 
 def update_vat_payer(request):
     x = Vat_payer.objects.all()
@@ -156,6 +157,7 @@ def update_vat_payer(request):
             logging.info(f"Processed {total_rows_processed} rows")
             logging.info("Bulk insert complete for all payers")
 
+        messages.success(request, "údaje platcov DPH boli aktualizované")
         return redirect('vat_payer')
 
     except requests.exceptions.RequestException as e:
@@ -172,7 +174,7 @@ def get_vat_payers(request):
         formatted_vat_payers = []
         for vat_payer in vat_payers:
             formatted_vat_payers.append({
-                'Názov': f'<a href="{reverse("vat_payer_record", args=[vat_payer["id"]])}">{vat_payer["NAZOV_DS"] or ""}</a>',
+                'Názov': vat_payer["NAZOV_DS"] or '',
                 'IČO': vat_payer['ICO'] or '',
                 'IČ DPH': vat_payer['IC_DPH'] or '',
                 'Obec': vat_payer['OBEC'] or '',
@@ -189,6 +191,7 @@ def get_vat_payers(request):
 def get_vat_payer_settings(request):
     if request.method == 'GET':
         vat_payer_settings = Vat_payer_setting.objects.all().values(
+            'id',
             'DRUH_REG_DPH',
             'PLATNY_DRUH_REG'
         )
@@ -196,7 +199,7 @@ def get_vat_payer_settings(request):
         formatted_vat_payer_settings = []
         for vat_payer_setting in vat_payer_settings:
             formatted_vat_payer_settings.append({
-                'Druh reg. DPH': vat_payer_setting["DRUH_REG_DPH"],
+                'Druh reg. DPH': f'<a href="{reverse("vat_payer_settings_record", args=[vat_payer_setting["id"]])}">{vat_payer_setting["DRUH_REG_DPH"] or ""}</a>',
                 'platný': vat_payer_setting['PLATNY_DRUH_REG']
             })
 
@@ -241,9 +244,24 @@ def test_vat_payer(request):
        
     return render(request, 'test_vat_payer.html', {'vat_payers': vat_payers})
 
-
-
+def delete_vat_payer_settings(request, pk):
+    delete_it = Vat_payer_setting.objects.get(id=pk)
+    delete_it.delete()
     
+    messages.success(request, "Záznam bol úspešne odstránený")
+    return redirect('vat_payer')
+
+
+def add_vat_payer_settings(request):
+    form = AddVatPayerSettingsForm(request.POST or None)
+    if request.method=="POST":
+        if form.is_valid():
+            add_vat_payer_settings = form.save()
+            messages.success(request, "Záznam bol pridaný")
+            return redirect('vat_payer')
+            
+    return render(request, 'add_record.html', {'form': form,'form_action_url': reverse('add_vat_payer_settings')})
+
 
             
 

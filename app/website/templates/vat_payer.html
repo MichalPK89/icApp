@@ -4,6 +4,23 @@
 
 <h1>Vat payers</h1>
 <br />
+
+{% if messages %}
+    {% for message in messages %}
+<div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert" id="message">
+    {{ message }}
+    <button type="button" class="close" data-bs-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+    {% endfor %}
+{% endif %}
+
+
+
+<br />
+
+
 <a href="{% url 'update_vat_payer' %}" class="btn btn-secondary">Download and Populate Data</a>
 
 <br />
@@ -82,6 +99,8 @@
         </table>
     </div>
 </div>
+<br />
+<a href="{% url 'add_vat_payer_settings' %}" class="btn btn-secondary">Add VAT payer settings</a>
 <br />
 <br />
 

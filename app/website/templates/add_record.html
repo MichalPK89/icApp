@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>Pridať záznam</h1>
+<br/>
+
+<form method="post" action="{{ form_action_url }}">
+    {% csrf_token %}
+
+    {{ form.as_p }}
+
+    <button type="submit" class="btn btn-secondary">Pridať záznam</button>
+
+</form>
+
+
+<br/><br />      
+                   
+
+
+{% endblock %}

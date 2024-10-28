@@ -104,10 +104,8 @@
                 const tableId = $(this).attr('id') || 'default-table'; 
                 const url = $(this).data('url');
                 const tableBodyId = $(this).find('tbody').attr('id') || 'default-tbody';              
-                const loadingContainerId = '#lc_' + tableId;
-                              
-
-                
+                const loadingContainerId = '#lc_' + tableId;        
+                                
                 console.log(`Found table with data-url: ${url}, tbody ID: ${tableBodyId}`);
 
                 // Call fetchTableData for each table
