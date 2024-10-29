@@ -4,6 +4,9 @@ import io
 import xml.etree.ElementTree as ET
 import logging
 
+from django.utils.translation import get_language
+from .models import Item
+
 class XMLDataProcessor:
     def __init__(self, url, model, field_mappings):
         self.url = url
@@ -52,3 +55,13 @@ class XMLDataProcessor:
             else:
                 logging.warning("Missing required fields. Skipping entry.")
         logging.info("Processing completed")
+
+
+class Translation:
+    
+    @staticmethod
+    def get_translation(identifier):
+        current_language = get_language()
+        item = Item.objects.get(identifier=identifier)
+        translation = item.translations.filter(language_code=current_language).first()
+        return translation.name if translation else ""

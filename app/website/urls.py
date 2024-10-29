@@ -15,4 +15,5 @@ urlpatterns = [
     path('test_vat_payer/', views.test_vat_payer, name='test_vat_payer'),
     path('delete_vat_payer_settings/<int:pk>', views.delete_vat_payer_settings, name='delete_vat_payer_settings'),
     path('add_vat_payer_settings/', views.add_vat_payer_settings, name='add_vat_payer_settings'),
+    
  ]

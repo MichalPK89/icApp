@@ -10,15 +10,13 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.utils.dateformat import format
-from django.utils.translation import get_language
 from django.db import connection
 from django.http import JsonResponse
 from django.urls import reverse
 from datetime import datetime
 from .forms import AddVatPayerSettingsForm
 from .models import Item, ItemTranslation, Vat_payer, Vat_payer_setting, Customer_VAT_check
-from .utils import XMLDataProcessor
-
+from .utils import XMLDataProcessor, Translation
 
 
 # Set up logging
@@ -26,12 +24,9 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 def home(request):
-    current_language = get_language()
-    item = Item.objects.get(identifier='welcome_page')
-    welcome_page_translation = item.translations.filter(language_code=current_language).first()
-    welcome_page_text = welcome_page_translation.name if welcome_page_translation else ""
-    
-    return render(request, 'home.html', {'welcome_page': welcome_page_text})
+    welcome_page = Translation.get_translation('welcome_page')
+        
+    return render(request, 'home.html', {'welcome_page': welcome_page})
 
 
 def login_user(request):
@@ -50,7 +45,6 @@ def login_user(request):
 
 def logout_user(request):
     logout(request)
-    messages.success(request, "Boli ste odhlásení")
     return redirect('login')
 
 def vat_payer(request):
