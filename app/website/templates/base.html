@@ -59,6 +59,19 @@
     </style>
 
     <style>
+        .language-form {
+            display: inline-block;
+        }
+
+        .language-label {
+            display: inline-block;
+            margin-right: 5px;
+        }
+
+        .language-select {
+            display: inline-block;
+        }
+
         /* Set the table to a constant height */
         .dataTables_wrapper {
             position: relative;
@@ -85,7 +98,7 @@
 
 <body>
     {% include 'navbar.html' %}
-    
+
     <div class="container">
         </br>
         {% block content %}
@@ -269,6 +282,8 @@
 
     </script>
 
+    <script type="text/javascript" src="{% static "/js/languageChange.js" %}"></script>
+    
     {% endblock %}
 
 </body>

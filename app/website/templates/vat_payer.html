@@ -2,7 +2,7 @@
 
 {% block content %}
 
-<h1>Vat payers</h1>
+<h1>{{ vat_payers_text }}</h1>
 <br />
 
 {% if messages %}
@@ -21,7 +21,7 @@
 <br />
 
 
-<a href="{% url 'update_vat_payer' %}" class="btn btn-secondary">Download and populate data</a>
+<a href="{% url 'update_vat_payer' %}" class="btn btn-secondary">{{ download_and_populate }}</a>
 
 <br />
 <br />
@@ -100,7 +100,7 @@
     </div>
 </div>
 <br />
-<a href="{% url 'add_vat_payer_settings' %}" class="btn btn-secondary">Add VAT payer settings</a>
+<a href="{% url 'add_vat_payer_settings' %}" class="btn btn-secondary">{{ add_vat_payer_settings }}</a>
 <br />
 <br />
 

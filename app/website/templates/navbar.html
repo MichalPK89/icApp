@@ -1,5 +1,3 @@
-
-
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
         <a class="navbar-brand" href="{% url 'home' %}">App</a>
@@ -15,8 +13,25 @@
             </ul>
             
             <ul class="navbar-nav ms-auto mb-2 ml-lg-0">
+                <li class="form">
+                    <form class="language-form" id="languageForm" method="post" action="{% url 'set_language' %}">
+                        {% csrf_token %}
+                        <label class="language-label" for="language">Lang:</label>
+                        <select class="language-select" name="language" id="language" onchange="changeLanguage(this.value)">
+                            {% for lang_code, lang_name in LANGUAGES %}
+                            {% if lang_code == LANGUAGE_CODE %}
+                            <option value="{{ lang_code }}" selected>{{ lang_name }}</option>
+                            {% else %}
+                            <option value="{{ lang_code }}">{{ lang_name }}</option>
+                            {% endif %}
+                            {% endfor %}
+
+                        </select>
+
+                    </form>
+                </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'logout' %}">Odhlásiť</a>
+                    <a class="nav-link" href="{% url 'logout' %}">Logout</a>
                 </li>
             </ul>
             

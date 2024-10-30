@@ -64,4 +64,14 @@ class Translation:
         current_language = get_language()
         item = Item.objects.get(identifier=identifier)
         translation = item.translations.filter(language_code=current_language).first()
-        return translation.name if translation else ""
+        translation_base = item.translations.filter(language_code='en').first()
+        translation_final=""
+        if translation:
+            translation_final=translation.name
+        elif translation_base:
+            translation_final=translation_base.name
+        else:
+            translation_final=""
+
+        return translation_final
+        

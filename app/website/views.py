@@ -48,9 +48,17 @@ def logout_user(request):
     return redirect('login')
 
 def vat_payer(request):
-    vat_payers = Vat_payer.objects.all()  # Fetch all VAT payers
-        
-    return render(request, 'vat_payer.html', {'vat_payers': vat_payers})
+    vat_payers = Vat_payer.objects.all()
+    vat_payers_text = Translation.get_translation('vat_payers')
+    download_and_populate = Translation.get_translation('download_and_populate')
+    add_vat_payer_settings = Translation.get_translation('add_vat_payer_settings')
+       
+    return render(request, 'vat_payer.html', {
+        'vat_payers': vat_payers, 
+        'vat_payers_text': vat_payers_text, 
+        'download_and_populate': download_and_populate,
+        'add_vat_payer_settings': add_vat_payer_settings
+        })
 
 def vat_payer_settings_record(request, pk):
     vat_payer_settings_record = Vat_payer_setting.objects.get(id=pk)
