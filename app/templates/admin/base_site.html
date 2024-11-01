@@ -39,14 +39,8 @@
 	</select>
 
 </form>
-
-<script>
-	function changeLanguage(languageCode) {
-		const form = document.getElementById('languageForm');
-		form.elements.language.value = languageCode;
-		form.submit();
-	}
-</script>
+{% load static %}
+<script type="text/javascript" src="{% static '/js/languageChange.js' %}"></script>
 
 
 

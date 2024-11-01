@@ -2,7 +2,7 @@
 
 {% block content %}
 
-<h1>Pridať záznam</h1>
+<h1>{{ add_record }}</h1>
 <br/>
 
 <form method="post" action="{{ form_action_url }}">
@@ -10,13 +10,13 @@
 
     {{ form.as_p }}
 
-    <button type="submit" class="btn btn-secondary">Pridať záznam</button>
+    <a href={{ back_url }} class="btn btn-secondary">{{ back }}</a>
+    <button type="submit" class="btn btn-primary">{{ submit }}</button>
 
 </form>
 
 
-<br/><br />      
-                   
+<br/><br />                 
 
 
 {% endblock %}

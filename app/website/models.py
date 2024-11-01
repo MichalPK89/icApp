@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
@@ -74,5 +75,12 @@ class VAT_type_undefined (models.Model):
         # The name of the view in the database
         db_table = 'vat_type_undefined'
         managed = False  # No migrations will be created for this model since it refers to a view
+
+class UserSettings(models.Model):
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, unique=True)
+    row_limit = models.PositiveIntegerField(default=1000)
+    
+    def __str__(self):
+        return (f"{self.user}, {self.row_limit}")
 
     

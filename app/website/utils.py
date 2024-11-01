@@ -5,7 +5,13 @@ import xml.etree.ElementTree as ET
 import logging
 
 from django.utils.translation import get_language
-from .models import Item
+from .models import Item, UserSettings
+
+def row_limit(user):
+       user_settings = UserSettings.objects.filter(user=user).first()
+       row_limit = user_settings.row_limit if user_settings else 1000
+       
+       return row_limit
 
 class XMLDataProcessor:
     def __init__(self, url, model, field_mappings):
@@ -74,4 +80,21 @@ class Translation:
             translation_final=""
 
         return translation_final
-        
+
+class Global_variables:
+
+    def get_shared_context():
+        logout = Translation.get_translation('logout')
+        add_record = Translation.get_translation('add_record')
+        submit = Translation.get_translation('submit')
+        back = Translation.get_translation('back')
+
+        return {
+            'logout': logout, 
+            'add_record': add_record, 
+            'submit': submit, 
+            'back': back
+        }
+
+
+    

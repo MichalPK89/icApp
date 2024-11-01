@@ -14,9 +14,9 @@ from django.db import connection
 from django.http import JsonResponse
 from django.urls import reverse
 from datetime import datetime
-from .forms import AddVatPayerSettingsForm
-from .models import Item, ItemTranslation, Vat_payer, Vat_payer_setting, Customer_VAT_check
-from .utils import XMLDataProcessor, Translation
+from .forms import AddVatPayerSettingsForm, TranslationsForm
+from .models import Item, ItemTranslation, Vat_payer, Vat_payer_setting, Customer_VAT_check, UserSettings
+from .utils import XMLDataProcessor, Translation, Global_variables, row_limit
 
 
 # Set up logging
@@ -167,7 +167,7 @@ def get_vat_payers(request):
         vat_payers = Vat_payer.objects.all().values(
             'id',  # Explicitly include 'id'
             'NAZOV_DS', 'ICO', 'IC_DPH', 'OBEC', 'PSC', 'ULICA_CISLO', 'STAT', 'DRUH_REG_DPH', 'DATUM_REG', 'DATUM_ZMENY_DRUHU_REG'
-        )[:1000]  # Limit to 1000 records
+        )[:row_limit(request.user)] 
 
         formatted_vat_payers = []
         for vat_payer in vat_payers:
@@ -192,7 +192,7 @@ def get_vat_payer_settings(request):
             'id',
             'DRUH_REG_DPH',
             'PLATNY_DRUH_REG'
-        )
+        )[:row_limit(request.user)] 
 
         formatted_vat_payer_settings = []
         for vat_payer_setting in vat_payer_settings:
@@ -214,7 +214,7 @@ def get_customer_vat_check(request):
             'IC_DPH_fin',
             'DRUH_REG_DPH',
             'DESCRIPTION'
-        )[:1000]  # Limit to 1000 records
+        )[:row_limit(request.user)] 
 
         
         formatted_customer_vat_check = []
@@ -246,19 +246,37 @@ def delete_vat_payer_settings(request, pk):
     delete_it = Vat_payer_setting.objects.get(id=pk)
     delete_it.delete()
     
-    messages.success(request, "Záznam bol úspešne odstránený")
+    messages.success(request, Translation.get_translation('record_deleted'))
     return redirect('vat_payer')
 
 
 def add_vat_payer_settings(request):
     form = AddVatPayerSettingsForm(request.POST or None)
+    back_url = reverse('vat_payer')
+    context = Global_variables.get_shared_context()
+    context.update({'form': form, 'form_action_url': reverse('add_vat_payer_settings'), 'back_url': back_url})
+    
     if request.method=="POST":
         if form.is_valid():
             add_vat_payer_settings = form.save()
-            messages.success(request, "Záznam bol pridaný")
+            messages.success(request, Translation.get_translation('record_added'))
             return redirect('vat_payer')
             
-    return render(request, 'add_record.html', {'form': form,'form_action_url': reverse('add_vat_payer_settings')})
+    return render(request, 'add_record.html', context)
+
+def translation(request):
+    form = TranslationsForm(request.POST or None)
+    back_url = reverse('translation')
+    context = Global_variables.get_shared_context()
+    context.update({'form': form, 'form_action_url': reverse('translation'), 'back_url': back_url})
+    
+    if request.method=="POST":
+        if form.is_valid():
+            translation = form.save()
+            messages.success(request, Translation.get_translation('record_added'))
+            return redirect('vat_payer')
+            
+    return render(request, 'add_record.html', context)
 
 
             
