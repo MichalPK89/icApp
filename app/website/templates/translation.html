@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2>{{ translation }}</h2>
+<br>
+
+<table class="table table-striped">
+    <tr>
+        <th>{{ item }}</th>
+        <th>EN-{{ translation }}</th>
+        <th>{{ translation }}</th>
+    </tr>
+    {% for entry in item_translations %}
+    <tr>
+        <td>{{ entry.item.identifier }}</td>
+        <td>{{ entry.en_value.name }}</td>
+        
+        <td>
+            <form method="post" action="{% url 'translation' %}">
+            {% csrf_token %}
+            <input type="hidden" name="item_id" value="{{ entry.item.id }}">
+        
+            {% if entry.translation %}
+                <input type="text" name="translation" style="width: 300px;" value="{{ entry.translation.name }}">
+            {% else %}
+                <input type="text" name="translation" style="width: 300px;" value="">
+            {% endif %}
+        
+             <button type="submit">
+                {% if entry.translation %} {{ update }} {% else %} {{ add }} {% endif %}
+            </button>
+            
+            </form>
+        </td>
+    </tr>
+    
+    {% endfor %}
+
+</table>
+
+
+{% endblock %}
+ {% load static %}
+
+<script type="text/javascript" src="{% static '/js/translationUpdate.js' %}"></script>

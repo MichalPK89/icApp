@@ -7,6 +7,26 @@ import logging
 from django.utils.translation import get_language
 from .models import Item, UserSettings
 
+def selected_language():
+    current_language = get_language()
+
+    return current_language
+
+def get_translation(identifier):
+        current_language = get_language()
+        item = Item.objects.get(identifier=identifier)
+        translation = item.translations.filter(language_code=current_language).first()
+        translation_base = item.translations.filter(language_code='en').first()
+        translation_final=""
+        if translation:
+            translation_final=translation.name
+        elif translation_base:
+            translation_final=translation_base.name
+        else:
+            translation_final=""
+
+        return translation_final
+
 def row_limit(user):
        user_settings = UserSettings.objects.filter(user=user).first()
        row_limit = user_settings.row_limit if user_settings else 1000
@@ -63,31 +83,13 @@ class XMLDataProcessor:
         logging.info("Processing completed")
 
 
-class Translation:
-    
-    @staticmethod
-    def get_translation(identifier):
-        current_language = get_language()
-        item = Item.objects.get(identifier=identifier)
-        translation = item.translations.filter(language_code=current_language).first()
-        translation_base = item.translations.filter(language_code='en').first()
-        translation_final=""
-        if translation:
-            translation_final=translation.name
-        elif translation_base:
-            translation_final=translation_base.name
-        else:
-            translation_final=""
-
-        return translation_final
-
 class Global_variables:
 
     def get_shared_context():
-        logout = Translation.get_translation('logout')
-        add_record = Translation.get_translation('add_record')
-        submit = Translation.get_translation('submit')
-        back = Translation.get_translation('back')
+        logout = get_translation('logout')
+        add_record = get_translation('add_record')
+        submit = get_translation('submit')
+        back = get_translation('back')
 
         return {
             'logout': logout, 

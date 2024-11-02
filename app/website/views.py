@@ -4,7 +4,7 @@ import io
 import xml.etree.ElementTree as ET
 import logging
 
-from django.shortcuts import render, redirect
+from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -16,7 +16,7 @@ from django.urls import reverse
 from datetime import datetime
 from .forms import AddVatPayerSettingsForm, TranslationsForm
 from .models import Item, ItemTranslation, Vat_payer, Vat_payer_setting, Customer_VAT_check, UserSettings
-from .utils import XMLDataProcessor, Translation, Global_variables, row_limit
+from .utils import XMLDataProcessor, Global_variables, row_limit, selected_language, get_translation
 
 
 # Set up logging
@@ -24,7 +24,7 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 def home(request):
-    welcome_page = Translation.get_translation('welcome_page')
+    welcome_page = get_translation('welcome_page')
         
     return render(request, 'home.html', {'welcome_page': welcome_page})
 
@@ -49,9 +49,9 @@ def logout_user(request):
 
 def vat_payer(request):
     vat_payers = Vat_payer.objects.all()
-    vat_payers_text = Translation.get_translation('vat_payers')
-    download_and_populate = Translation.get_translation('download_and_populate')
-    add_vat_payer_settings = Translation.get_translation('add_vat_payer_settings')
+    vat_payers_text = get_translation('vat_payers')
+    download_and_populate = get_translation('download_and_populate')
+    add_vat_payer_settings = get_translation('add_vat_payer_settings')
        
     return render(request, 'vat_payer.html', {
         'vat_payers': vat_payers, 
@@ -246,7 +246,7 @@ def delete_vat_payer_settings(request, pk):
     delete_it = Vat_payer_setting.objects.get(id=pk)
     delete_it.delete()
     
-    messages.success(request, Translation.get_translation('record_deleted'))
+    messages.success(request, get_translation('record_deleted'))
     return redirect('vat_payer')
 
 
@@ -259,24 +259,61 @@ def add_vat_payer_settings(request):
     if request.method=="POST":
         if form.is_valid():
             add_vat_payer_settings = form.save()
-            messages.success(request, Translation.get_translation('record_added'))
+            messages.success(request, get_translation('record_added'))
             return redirect('vat_payer')
             
     return render(request, 'add_record.html', context)
 
+
 def translation(request):
-    form = TranslationsForm(request.POST or None)
-    back_url = reverse('translation')
-    context = Global_variables.get_shared_context()
-    context.update({'form': form, 'form_action_url': reverse('translation'), 'back_url': back_url})
+    current_language = selected_language()
+
+    # Get all Items and use prefetch_related to get related translations for each item
+    items = Item.objects.prefetch_related('translations').all()
+    translation = get_translation("translation")
+    item = get_translation("item")
+    add = get_translation("add")
+    update = get_translation("update")
     
-    if request.method=="POST":
-        if form.is_valid():
-            translation = form.save()
-            messages.success(request, Translation.get_translation('record_added'))
-            return redirect('vat_payer')
-            
-    return render(request, 'add_record.html', context)
+    
+   
+
+    # For each item, get the translation in the current language (if available)
+    item_translations = [
+        {
+            'item': item,
+            'en_value': item.translations.filter(language_code="en").first(),
+            'translation': item.translations.filter(language_code=current_language).first()
+        }
+        for item in items
+    ]
+
+    context=({
+        'item_translations': item_translations,
+        'current_language': current_language,
+        'translation': translation,
+        'item': item,
+        'add': add,
+        'update': update
+        })
+
+    if request.method == "POST":
+        item_id = request.POST.get("item_id")
+        new_translation_value = request.POST.get("translation")
+
+        # Fetch or create the translation entry
+        item = get_object_or_404(Item, id=item_id)
+        translation, created = ItemTranslation.objects.get_or_create(
+            item=item, language_code=current_language
+        )
+        
+        # Update the translation with the new value
+        translation.name = new_translation_value
+        translation.save()
+        
+        return redirect('translation')
+
+    return render(request, 'translation.html', context)
 
 
             

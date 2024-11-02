@@ -5,9 +5,9 @@ from .models import Vat_payer_setting, ItemTranslation
 class TranslationsForm(forms.ModelForm):
     class Meta:
         model = ItemTranslation
-        exclude = ("id",)
+        exclude = ("id","language_code")
         widgets = {
-            'item': forms.TextInput(attrs={"placeholder": "Druh", "class": "form-control", "readonly": "readonly"}),
+            'item': forms.TextInput(attrs={"placeholder": ItemTranslation.item, "class": "form-control", "readonly": "readonly"}),
             'name': forms.TextInput(attrs={"class": "form-control"}),  # Changed from CheckboxInput to TextInput
         }
         labels = {

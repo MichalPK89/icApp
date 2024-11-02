@@ -13,6 +13,9 @@
             </ul>
             
             <ul class="navbar-nav ms-auto mb-2 ml-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'translation' %}">Settings</a>
+                </li>
                 <li class="form">
                     <form class="language-form" id="languageForm" method="post" action="{% url 'set_language' %}">
                         {% csrf_token %}
