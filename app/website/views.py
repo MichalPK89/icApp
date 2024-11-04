@@ -16,7 +16,7 @@ from django.urls import reverse
 from datetime import datetime
 from .forms import AddVatPayerSettingsForm, TranslationsForm
 from .models import Item, ItemTranslation, Vat_payer, Vat_payer_setting, Customer_VAT_check, UserSettings
-from .utils import XMLDataProcessor, Global_variables, row_limit, selected_language, get_translation
+from .utils_file import XMLDataProcessor, row_limit, selected_language, get_translation
 
 
 # Set up logging
@@ -46,6 +46,10 @@ def login_user(request):
 def logout_user(request):
     logout(request)
     return redirect('login')
+
+def user_profile(request):
+            
+    return render(request, 'user_profile.html')
 
 def vat_payer(request):
     vat_payers = Vat_payer.objects.all()
@@ -253,8 +257,7 @@ def delete_vat_payer_settings(request, pk):
 def add_vat_payer_settings(request):
     form = AddVatPayerSettingsForm(request.POST or None)
     back_url = reverse('vat_payer')
-    context = Global_variables.get_shared_context()
-    context.update({'form': form, 'form_action_url': reverse('add_vat_payer_settings'), 'back_url': back_url})
+    context =({'form': form, 'form_action_url': reverse('add_vat_payer_settings'), 'back_url': back_url})
     
     if request.method=="POST":
         if form.is_valid():

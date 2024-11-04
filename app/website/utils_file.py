@@ -82,21 +82,3 @@ class XMLDataProcessor:
                 logging.warning("Missing required fields. Skipping entry.")
         logging.info("Processing completed")
 
-
-class Global_variables:
-
-    def get_shared_context():
-        logout = get_translation('logout')
-        add_record = get_translation('add_record')
-        submit = get_translation('submit')
-        back = get_translation('back')
-
-        return {
-            'logout': logout, 
-            'add_record': add_record, 
-            'submit': submit, 
-            'back': back
-        }
-
-
-    
