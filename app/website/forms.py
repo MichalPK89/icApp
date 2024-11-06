@@ -40,3 +40,6 @@ class AddVatPayerSettingsForm(forms.ModelForm):
             'druh_reg_DPH': "",
             'platny': "",
         }
+
+
+   

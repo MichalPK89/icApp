@@ -66,7 +66,30 @@ def vat_payer(request):
 
 def vat_payer_settings_record(request, pk):
     vat_payer_settings_record = Vat_payer_setting.objects.get(id=pk)
-    return render(request, 'vat_payer_settings_record.html', {'vat_payer_settings_record': vat_payer_settings_record})
+    form = AddVatPayerSettingsForm(request.POST or None, instance=vat_payer_settings_record)
+    name = get_translation('VAT_registration_settings')
+    delete_url_name = 'delete_vat_payer_settings'
+    record_id = vat_payer_settings_record.id
+    back_url = reverse('vat_payer')
+    
+    context =({
+        'form': form, 
+        'vat_payer_settings_record': vat_payer_settings_record, 
+        'name': name,
+        'delete_url_name': delete_url_name,
+        'record_id': record_id,
+        'back_url': back_url,
+        'id': pk,
+             })
+    
+    if request.method=="POST":
+        if form.is_valid():
+            form.save()
+            messages.success(request, get_translation('record_updated'))
+            return redirect('vat_payer')
+
+
+    return render(request, 'record.html', context)
 
 def update_vat_payer(request):
     x = Vat_payer.objects.all()
@@ -245,6 +268,7 @@ def test_vat_payer(request):
     vat_payers = Vat_payer.objects.all()  # Fetch all VAT payers
        
     return render(request, 'test_vat_payer.html', {'vat_payers': vat_payers})
+
 
 def delete_vat_payer_settings(request, pk):
     delete_it = Vat_payer_setting.objects.get(id=pk)
