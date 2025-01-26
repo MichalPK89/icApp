@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2>{{ name }}-id: {{ id }}</h2>
+
+<br />
+
+<form method="post" action="{{ form_action_url }}">
+    {% csrf_token %}
+
+    {{ form.as_p }}
+
+    <a href={{ back_url }} class="btn btn-secondary">{{ back }}</a>
+    <button type="submit" class="btn btn-primary">{{ update }}</button>
+    <a href="{% url delete_url_name record_id %}" class="btn btn-danger">{{ delete }}</a>
+
+
+</form>
+
+
+
+
+{% endblock %}

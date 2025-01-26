@@ -13,6 +13,8 @@ def global_variables(request):
     delete = get_translation('delete')
     update = get_translation('update')
     update_record = get_translation('update_record')
+    settings = get_translation('settings')
+    translation = get_translation('translation')
 
     return {
         'user': user,
@@ -25,5 +27,7 @@ def global_variables(request):
         'back': back,
         'delete': delete,
         'update': update,
-        'update_record': update_record
+        'update_record': update_record,
+        'settings': settings,
+        'translation': translation
     }
