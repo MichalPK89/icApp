@@ -15,6 +15,7 @@ def global_variables(request):
     update_record = get_translation('update_record')
     settings = get_translation('settings')
     translation = get_translation('translation')
+    user_settings = get_translation('user_settings')
 
     return {
         'user': user,
@@ -29,5 +30,7 @@ def global_variables(request):
         'update': update,
         'update_record': update_record,
         'settings': settings,
-        'translation': translation
+        'translation': translation,
+        'user_settings': user_settings
+
     }

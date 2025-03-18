@@ -56,12 +56,19 @@ def vat_payer(request):
     vat_payers_text = get_translation('vat_payers')
     download_and_populate = get_translation('download_and_populate')
     add_vat_payer_settings = get_translation('add_vat_payer_settings')
+    for_correction = get_translation('for_correction')
+    vat_payer_types = get_translation('vat_payer_types')
+    financial_institution_data = get_translation('financial_institution_data')
+
        
     return render(request, 'vat_payer.html', {
         'vat_payers': vat_payers, 
         'vat_payers_text': vat_payers_text, 
         'download_and_populate': download_and_populate,
-        'add_vat_payer_settings': add_vat_payer_settings
+        'add_vat_payer_settings': add_vat_payer_settings,
+        'for_correction': for_correction,
+        'vat_payer_types': vat_payer_types,
+        'financial_institution_data': financial_institution_data
         })
 
 def vat_payer_settings_record(request, pk):
